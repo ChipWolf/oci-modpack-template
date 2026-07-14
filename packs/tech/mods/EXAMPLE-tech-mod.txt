@@ -1,0 +1,5 @@
+This placeholder stands in for a mod .jar unique to the "tech" pack.
+
+Delete it and add the mods that belong only to this pack. Rename the
+"tech" folder to whatever you want your pack to be called - the folder name
+becomes the published pack name.

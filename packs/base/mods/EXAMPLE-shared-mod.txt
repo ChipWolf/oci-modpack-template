@@ -1,0 +1,5 @@
+This placeholder stands in for a mod .jar that ALL your packs share.
+
+Delete this file and drop the .jar files common to every pack into this
+folder (packs/base/mods/). Anything in packs/base/ is bundled once and
+reused by every pack, so a server that already has it won't re-download it.

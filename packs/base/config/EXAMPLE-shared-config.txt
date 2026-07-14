@@ -1,0 +1,4 @@
+This placeholder stands in for shared config files.
+
+Delete it and add config that every pack should include (it will be applied
+into the server's /data/config).

@@ -1,0 +1,5 @@
+This placeholder stands in for a mod .jar unique to the "magic" pack.
+
+Delete it and add the mods that belong only to this pack. Because both
+"tech" and "magic" include everything in packs/base/, that shared base is
+stored in the registry only once.
