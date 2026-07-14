@@ -10,14 +10,14 @@ GENERIC_PACKS=oci://ghcr.io/you/your-repo/your-pack:latest
 
 **You don't need to know what "OCI" means.** If you can put files into
 folders on GitHub, you can publish a modpack with this template. GitHub
-builds and hosts everything for you - no server, no command line, no cost.
+builds and hosts everything for you: no server, no command line, no cost.
 
 What you get over a plain `.zip`:
 
 - **Shared content is stored and downloaded once.** If five packs share the
   same base mods, that base is uploaded once and a server that already has
   it skips re-downloading. (This is the same trick Docker images use.)
-- **Version pinning** built in - refer to a pack by a version tag or an
+- **Version pinning** built in: refer to a pack by a version tag or an
   exact `@sha256:...` fingerprint.
 - **Private packs** work too, using a normal `docker login`.
 
@@ -27,13 +27,13 @@ What you get over a plain `.zip`:
 
 ## What's an OCI artifact? (60 seconds)
 
-You don't need to understand this to use the template - but here's the idea
-in plain terms:
+You don't need to understand this to use the template. The idea in plain
+terms:
 
-- A **container image** (the thing Docker uses) is really just a small
-  description file plus a few compressed folders called **layers**, each
-  identified by a unique fingerprint.
-- A **registry** is the server that stores them - Docker Hub, or GitHub's
+- A **container image** (the thing Docker uses) is a small description file
+  plus a few compressed folders called **layers**, each identified by a
+  unique fingerprint.
+- A **registry** is the server that stores them, like Docker Hub or GitHub's
   own **GHCR**, which this template uses. A registry stores each layer only
   once, even when many things point at it.
 - The format that registries and tools all agree on is the
@@ -41,13 +41,13 @@ in plain terms:
   standard. Every modern registry speaks it.
 - An **OCI artifact** is that same "description + layers" packaging used for
   something *other than* a runnable program. Helm charts, security
-  signatures, and - here - **modpacks** all ride the same rails. A small
+  signatures, and, here, **modpacks** all ride the same rails. A small
   label on the artifact says "this is a modpack, not an app," so tools don't
   try to run it.
 
-So "publish your modpack as an OCI artifact" just means: tar your pack into
+So "publish your modpack as an OCI artifact" means: tar your pack into
 a layer or two, write the little description file, and push it to a registry
-your players' servers can already reach. Nothing new is invented - it's the
+your players' servers can already reach. Nothing new is invented; it's the
 same plumbing behind every `docker pull`.
 
 **Want the authoritative source?** The standard itself lives at
@@ -55,7 +55,7 @@ same plumbing behind every `docker pull`.
 this template publishes to is documented
 [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
 
-### Why not just ship a `.zip`?
+### Why not ship a `.zip`?
 
 A plain `.zip` bundles every pack as one standalone blob, so shared content
 is duplicated in each. With OCI layers, the shared part is stored once and a
@@ -121,14 +121,20 @@ step.
 2. Rename the pack folders, or add new ones, to match your packs. The
    folder name becomes the pack name.
 3. Put your files in:
-   - `packs/base/mods/` and `packs/base/config/` - shared by every pack.
-   - `packs/<yourpack>/mods/` - that pack's own mods.
+   - `packs/base/mods/` and `packs/base/config/`: shared by every pack.
+   - `packs/<yourpack>/mods/`: that pack's own mods.
 
 All in the browser: open a folder, click **Add file -> Upload files**, and
 drag your `.jar`s in. (Or use GitHub Desktop / git if you prefer.)
 
 > No shared content? Just delete `packs/base/` and give each pack its own
 > full set of files.
+
+> Prefer to track mods declaratively (by Modrinth/CurseForge project and
+> version) instead of committing jars? See
+> [docs/packwiz.md](docs/packwiz.md), where CI resolves the jars with
+> packwiz and bakes them into the artifact. Note the redistribution warning
+> there before publishing a baked pack publicly.
 
 ---
 
@@ -142,7 +148,7 @@ turns green, your packs are live. It publishes:
 - the `:latest` tag every time you push to `main`, and
 - a version tag (e.g. `v1.0.0`) whenever you create a
   [release/tag](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)
-  by that name - recommended so players can pin a version.
+  by that name, recommended so players can pin a version.
 
 The workflow log ends with the exact addresses of your packs, e.g.
 `ghcr.io/you/my-modpacks/tech:latest`.
@@ -173,8 +179,8 @@ a password:
 
 It pulls your packs back from the registry and prints:
 
-- each pack's layers - you'll see the **shared base layer's fingerprint is
-  identical across packs**, proving it's stored once, and
+- each pack's layers, where you'll see the **shared base layer's fingerprint
+  is identical across packs**, proving it's stored once, and
 - the **list of files each pack would drop into a server**, so you can
   confirm your mods are all there.
 
@@ -203,7 +209,16 @@ More than one pack, applied in order (later packs win on conflicts):
 GENERIC_PACKS: "oci://ghcr.io/you/my-modpacks/base-extras:latest,oci://ghcr.io/you/my-modpacks/tech:latest"
 ```
 
-You can freely mix `oci://` refs with the plain URLs and file paths
+To avoid repeating the registry base on every entry, set
+`GENERIC_PACKS_PREFIX`; each comma-separated entry is prefixed with it, so
+every pack still carries its own tag:
+
+```yaml
+GENERIC_PACKS_PREFIX: "oci://ghcr.io/you/my-modpacks/"
+GENERIC_PACKS: "base-extras:latest,tech:v1.2.0"
+```
+
+You can mix `oci://` refs with the plain URLs and file paths
 `GENERIC_PACKS` already accepts. Pin a version with a tag
 (`.../tech:v1.0.0`) or an exact digest (`.../tech@sha256:...`).
 
@@ -212,7 +227,7 @@ You can freely mix `oci://` refs with the plain URLs and file paths
 ## The payoff, once you have many packs
 
 The more packs you ship that share components, the more the shared layers
-are reused - stored once in the registry and downloaded once per server,
+are reused: stored once in the registry and downloaded once per server,
 no matter how many packs reference them:
 
 ![Four packs (Tech, Adventure, Magic, Skyblock) built from shared Core and Performance layers plus small unique overlays; 10 layer references resolve to only 6 stored blobs.](docs/layer-reuse-scales.svg)
@@ -239,16 +254,16 @@ for details.
 **The publish workflow is red.**
 Open the failed run in the Actions tab. The most common cause is the
 `packs/` folder having no pack folders (only `base/`), or Actions not being
-enabled - enable it once from the Actions tab.
+enabled; enable it once from the Actions tab.
 
 **My server can't pull the pack ("unauthorized" / "not found").**
-The package is probably still private - do [Step 5](#step-5---make-your-packs-downloadable-one-time),
+The package is probably still private; do [Step 5](#step-5---make-your-packs-downloadable-one-time),
 or provide credentials as in [Private packs](#private-packs). Also check the
 address is all lowercase.
 
 **My mods didn't show up in the server.**
 Make sure files are inside `mods/` (or `config/`, `plugins/`, ...) within
-the pack folder, not loose at the pack's top level - the server applies the
+the pack folder, not loose at the pack's top level; the server applies the
 pack contents straight into `/data`.
 
 **The test workflow can't find a pack.**
@@ -259,7 +274,7 @@ under `packs/` match what you published.
 
 ## Running locally (optional, for the curious)
 
-You never need this - GitHub does it all - but if you want to build on your
+You never need this; GitHub does it all. But if you want to build on your
 own machine, install [mise](https://mise.jdx.dev) and run:
 
 ```sh
@@ -276,12 +291,12 @@ REGISTRY=ghcr.io/you/my-modpacks mise run verify
 
 Each pack folder is turned into a **reproducible `tar.gz`** (fixed file
 order and timestamps), so identical content always produces an identical
-fingerprint - that's what lets the shared base layer be stored once. The
+fingerprint, which is what lets the shared base layer be stored once. The
 layers are pushed with [`oras`](https://oras.land) as an OCI artifact whose
 type is `application/vnd.itzg.minecraft.modpack.v1+json`, with each layer
 typed `application/vnd.itzg.minecraft.modpack.layer.v1.tar+gzip`. The
 server's `install-oci-pack` validates those types, pulls the layers, and
-extracts them into `/data` in order - the same pipeline it already uses for
+extracts them into `/data` in order, the same pipeline it already uses for
 `.zip`/`.tgz` generic packs.
 
 ---
@@ -290,7 +305,7 @@ extracts them into `/data` in order - the same pipeline it already uses for
 
 | Term | In plain words |
 | --- | --- |
-| **Registry** | A place that stores packages. This template uses **GHCR**, GitHub's built-in one - free and already tied to your account. |
+| **Registry** | A place that stores packages. This template uses **GHCR**, GitHub's built-in one, free and already tied to your account. |
 | **OCI artifact** | The standard "box" format registries use. Docker images are OCI artifacts; so are these modpacks. |
 | **Layer** | One `tar.gz` of files inside a pack. Shared layers are stored once. |
 | **Tag** | A friendly version label, like `latest` or `v1.0.0`. |
