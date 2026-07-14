@@ -1,0 +1,46 @@
+name: test
+
+# One-click test of your PUBLISHED packs. Go to the Actions tab, pick
+# "test", and press "Run workflow". It pulls each pack back from the
+# registry, shows that the shared base layer is stored once, and extracts
+# each pack so you can see exactly which files it would add to a server.
+#
+# (This does not start a Minecraft server. For a real end-to-end server
+# test see examples/server/docker-compose.yml.)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to test"
+        default: latest
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install oras
+        uses: oras-project/setup-oras@v1
+        with:
+          version: 1.2.2
+
+      - name: Resolve registry namespace
+        id: registry
+        run: |
+          ns="$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')"
+          echo "ref=ghcr.io/${ns}" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | oras login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Pull packs, check layer reuse, extract
+        env:
+          REGISTRY: ${{ steps.registry.outputs.ref }}
+          TAG: ${{ github.event.inputs.tag || 'latest' }}
+        run: ./scripts/verify.sh

@@ -1,0 +1,2 @@
+# Keep shell scripts LF so they run on Linux CI regardless of author OS.
+*.sh text eol=lf

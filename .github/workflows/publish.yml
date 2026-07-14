@@ -1,0 +1,68 @@
+name: publish
+
+# Builds every modpack under packs/ and publishes it to this repo's GitHub
+# Container Registry (GHCR) namespace. Runs automatically:
+#   - push to main            -> publishes the :latest tag
+#   - push a tag like v1.0.0   -> publishes that version tag
+#   - pull request             -> builds only (no upload), as a check
+# No secrets to configure: GITHUB_TOKEN can write to your own GHCR packages.
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install oras
+        uses: oras-project/setup-oras@v1
+        with:
+          version: 1.2.2
+
+      - name: Resolve registry namespace (must be lowercase)
+        id: registry
+        run: |
+          ns="$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')"
+          echo "ref=ghcr.io/${ns}" >> "$GITHUB_OUTPUT"
+
+      - name: Decide tag and whether to push
+        id: mode
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "push=false" >> "$GITHUB_OUTPUT"
+            echo "tag=pr-${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ github.ref_type }}" == "tag" ]]; then
+            echo "push=true" >> "$GITHUB_OUTPUT"
+            echo "tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "push=true" >> "$GITHUB_OUTPUT"
+            echo "tag=latest" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Log in to GHCR
+        if: steps.mode.outputs.push == 'true'
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | oras login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Build and publish packs
+        env:
+          REGISTRY: ${{ steps.registry.outputs.ref }}
+          PUSH: ${{ steps.mode.outputs.push }}
+          TAG: ${{ steps.mode.outputs.tag }}
+        run: ./scripts/build-and-push.sh
+
+      - name: Save built layers as a workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: modpack-layers
+          path: out/*.tar.gz
+          if-no-files-found: error
