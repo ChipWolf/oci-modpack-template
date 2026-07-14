@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="t1 d1">
+  <title id="t1">Two modpacks sharing one base layer in an OCI registry</title>
+  <desc id="d1">The tech pack and the magic pack are each built from a shared base layer plus their own overlay layer. In the registry, the tech-mods and magic-mods overlays are separate blobs, but both packs point at one single base-layer blob, which is stored and downloaded only once.</desc>
+  <defs>
+    <marker id="mS" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#51606f"/>
+    </marker>
+    <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#1c5cab"/>
+    </marker>
+    <marker id="mV" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#4a3aa7"/>
+    </marker>
+  </defs>
+
+  <!-- opaque card so the figure is legible on light and dark page themes -->
+  <rect x="1" y="1" width="958" height="538" rx="14" fill="#f6f7f4" stroke="#d7d6cf"/>
+
+  <g font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+    <!-- pixel-stair motif + title -->
+    <rect x="46" y="56" width="10" height="10" fill="#51606f"/>
+    <rect x="56" y="46" width="10" height="10" fill="#8194a6"/>
+    <rect x="66" y="36" width="10" height="10" fill="#c2cdd7"/>
+    <text x="90" y="56" font-size="21" font-weight="700" fill="#1a1a19">Two packs, one shared base layer</text>
+    <text x="90" y="80" font-size="13.5" fill="#52514e">tech = base + tech-mods&#160;&#160;&#183;&#160;&#160;magic = base + magic-mods &#8212; both packs reference the same base blob</text>
+
+    <!-- column headers -->
+    <text x="44" y="122" font-size="11" font-weight="600" letter-spacing="1.2" fill="#898781">PACKS &#183; WHAT A SERVER PULLS</text>
+    <text x="556" y="122" font-size="11" font-weight="600" letter-spacing="1.2" fill="#898781">REGISTRY (E.G. GHCR) &#183; WHAT IS STORED</text>
+
+    <!-- tech pack -->
+    <g>
+      <rect x="44" y="132" width="252" height="142" rx="8" fill="#ffffff" stroke="#e3e2db"/>
+      <rect x="60" y="149" width="11" height="11" fill="#2a78d6"/>
+      <text x="78" y="160" font-size="14" font-weight="700" fill="#1a1a19">tech pack</text>
+      <rect x="60" y="174" width="220" height="40" rx="3" fill="#dcebfb" stroke="#2a78d6" stroke-width="1.5"/>
+      <text x="72" y="198" font-size="13" fill="#17457e">tech-mods layer</text>
+      <text x="270" y="198" font-size="10" text-anchor="end" fill="#4a6f9c" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">@4be1&#8230;</text>
+      <rect x="60" y="222" width="220" height="40" rx="3" fill="#dfe5ea" stroke="#51606f" stroke-width="1.5"/>
+      <rect x="66" y="228" width="6" height="6" fill="#51606f" opacity="0.55"/>
+      <rect x="72" y="234" width="6" height="6" fill="#51606f" opacity="0.3"/>
+      <text x="84" y="246" font-size="13" fill="#33404d">base layer (shared)</text>
+      <text x="270" y="246" font-size="10" text-anchor="end" fill="#5c6b7a" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">@9f2c&#8230;</text>
+    </g>
+
+    <!-- magic pack -->
+    <g>
+      <rect x="44" y="316" width="252" height="142" rx="8" fill="#ffffff" stroke="#e3e2db"/>
+      <rect x="60" y="333" width="11" height="11" fill="#4a3aa7"/>
+      <text x="78" y="344" font-size="14" font-weight="700" fill="#1a1a19">magic pack</text>
+      <rect x="60" y="358" width="220" height="40" rx="3" fill="#e6e2f8" stroke="#4a3aa7" stroke-width="1.5"/>
+      <text x="72" y="382" font-size="13" fill="#3b2f86">magic-mods layer</text>
+      <text x="270" y="382" font-size="10" text-anchor="end" fill="#6a5fb0" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">@c7d0&#8230;</text>
+      <rect x="60" y="406" width="220" height="40" rx="3" fill="#dfe5ea" stroke="#51606f" stroke-width="1.5"/>
+      <rect x="66" y="412" width="6" height="6" fill="#51606f" opacity="0.55"/>
+      <rect x="72" y="418" width="6" height="6" fill="#51606f" opacity="0.3"/>
+      <text x="84" y="430" font-size="13" fill="#33404d">base layer (shared)</text>
+      <text x="270" y="430" font-size="10" text-anchor="end" fill="#5c6b7a" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">@9f2c&#8230;</text>
+    </g>
+
+    <!-- registry -->
+    <g>
+      <rect x="556" y="132" width="360" height="326" rx="10" fill="#ffffff" stroke="#e3e2db"/>
+      <text x="572" y="156" font-size="11" fill="#898781">each unique blob stored exactly once</text>
+
+      <rect x="584" y="170" width="304" height="48" rx="3" fill="#dcebfb" stroke="#2a78d6" stroke-width="1.5"/>
+      <text x="600" y="190" font-size="13" font-weight="600" fill="#17457e">tech-mods layer</text>
+      <text x="600" y="206" font-size="10.5" fill="#4a6f9c" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">sha256:4be1&#8230;</text>
+
+      <rect x="584" y="250" width="304" height="68" rx="3" fill="#dfe5ea" stroke="#51606f" stroke-width="2"/>
+      <rect x="590" y="256" width="6" height="6" fill="#51606f" opacity="0.55"/>
+      <rect x="596" y="262" width="6" height="6" fill="#51606f" opacity="0.3"/>
+      <text x="608" y="276" font-size="13.5" font-weight="700" fill="#33404d">base layer</text>
+      <text x="608" y="294" font-size="10.5" fill="#5c6b7a" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">sha256:9f2c&#8230;</text>
+      <rect x="796" y="260" width="80" height="21" rx="10.5" fill="#51606f"/>
+      <text x="836" y="274" font-size="10.5" font-weight="600" text-anchor="middle" fill="#ffffff">stored once</text>
+      <text x="796" y="298" font-size="10" fill="#898781">referenced &#215;2</text>
+
+      <rect x="584" y="352" width="304" height="48" rx="3" fill="#e6e2f8" stroke="#4a3aa7" stroke-width="1.5"/>
+      <text x="600" y="372" font-size="13" font-weight="600" fill="#3b2f86">magic-mods layer</text>
+      <text x="600" y="388" font-size="10.5" fill="#6a5fb0" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">sha256:c7d0&#8230;</text>
+    </g>
+
+    <!-- connectors -->
+    <g fill="none">
+      <path d="M282,194 L572,194" stroke="#1c5cab" stroke-width="1.75" marker-end="url(#mB)"/>
+      <path d="M282,378 C380,378 470,376 572,376" stroke="#4a3aa7" stroke-width="1.75" marker-end="url(#mV)"/>
+      <path d="M282,242 C380,242 460,278 535,283" stroke="#51606f" stroke-width="2"/>
+      <path d="M282,426 C380,426 460,292 535,287" stroke="#51606f" stroke-width="2"/>
+      <path d="M546,285 L570,285" stroke="#51606f" stroke-width="2" marker-end="url(#mS)"/>
+    </g>
+    <circle cx="540" cy="285" r="5" fill="#51606f"/>
+    <text x="420" y="316" font-size="10.5" font-style="italic" text-anchor="middle" fill="#898781">both packs point at the same blob</text>
+
+    <!-- caption -->
+    <rect x="44" y="482" width="10" height="10" fill="#51606f"/>
+    <text x="62" y="492" font-size="13" fill="#52514e">The shared base layer is stored and downloaded <tspan font-weight="700" fill="#33404d">once</tspan> &#8212; a server that already pulled it for tech reuses it for magic.</text>
+  </g>
+</svg>

@@ -58,7 +58,7 @@ jobs:
           REGISTRY: ${{ steps.registry.outputs.ref }}
           PUSH: ${{ steps.mode.outputs.push }}
           TAG: ${{ steps.mode.outputs.tag }}
-        run: ./scripts/build-and-push.sh
+        run: bash ./scripts/build-and-push.sh
 
       - name: Save built layers as a workflow artifact
         uses: actions/upload-artifact@v4

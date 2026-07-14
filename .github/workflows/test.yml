@@ -43,4 +43,4 @@ jobs:
         env:
           REGISTRY: ${{ steps.registry.outputs.ref }}
           TAG: ${{ github.event.inputs.tag || 'latest' }}
-        run: ./scripts/verify.sh
+        run: bash ./scripts/verify.sh

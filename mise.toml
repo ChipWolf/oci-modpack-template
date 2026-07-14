@@ -13,12 +13,12 @@ TAG = "latest"
 
 [tasks.build]
 description = "Build modpack layers locally (no upload)"
-run = "PUSH=false ./scripts/build-and-push.sh"
+run = "PUSH=false bash scripts/build-and-push.sh"
 
 [tasks.publish]
 description = "Build and push all packs to $REGISTRY (run `oras login ghcr.io` first)"
-run = "./scripts/build-and-push.sh"
+run = "bash scripts/build-and-push.sh"
 
 [tasks.verify]
 description = "Pull packs back, show layer reuse, and extract them locally"
-run = "./scripts/verify.sh"
+run = "bash scripts/verify.sh"

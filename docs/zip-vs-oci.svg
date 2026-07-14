@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" role="img" aria-labelledby="t3 d3">
+  <title id="t3">Plain zip downloads versus shared OCI layers</title>
+  <desc id="d3">Left: shipping three packs as plain zip files means three full copies — each zip repeats the same 5 megabytes of shared mods, about 18 megabytes in total. Right: as OCI layers the shared base is stored once plus three small 1-megabyte overlays, about 8 megabytes in total. Example takeaway: adding a fourth pack costs about 6 megabytes as a zip but only about 1 megabyte as a layer.</desc>
+  <defs>
+    <pattern id="dup" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="8" height="8" fill="#e6ebef"/>
+      <rect width="4" height="8" fill="#d3dce3"/>
+    </pattern>
+    <marker id="pS" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#51606f"/>
+    </marker>
+  </defs>
+
+  <!-- opaque card so the figure is legible on light and dark page themes -->
+  <rect x="1" y="1" width="958" height="558" rx="14" fill="#f6f7f4" stroke="#d7d6cf"/>
+
+  <g font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+    <!-- pixel-stair motif + title -->
+    <rect x="46" y="56" width="10" height="10" fill="#51606f"/>
+    <rect x="56" y="46" width="10" height="10" fill="#8194a6"/>
+    <rect x="66" y="36" width="10" height="10" fill="#c2cdd7"/>
+    <text x="90" y="56" font-size="21" font-weight="700" fill="#1a1a19">Shipping 3 packs: standalone zips vs shared OCI layers</text>
+    <text x="90" y="80" font-size="13.5" fill="#52514e">Same content, two packaging strategies &#8212; sizes are illustrative, not a guarantee.</text>
+
+    <!-- LEFT: plain zip -->
+    <g>
+      <rect x="44" y="104" width="428" height="356" rx="10" fill="#ffffff" stroke="#e3e2db"/>
+      <text x="64" y="132" font-size="13" font-weight="700" letter-spacing="0.8" fill="#1a1a19">PLAIN .ZIP</text>
+      <text x="64" y="149" font-size="11" fill="#898781">every pack ships a full copy of the shared mods</text>
+
+      <!-- tech.zip -->
+      <text x="123" y="180" font-size="11.5" font-weight="600" text-anchor="middle" fill="#52514e">tech.zip</text>
+      <rect x="64" y="188" width="118" height="30" rx="3" fill="#dcebfb" stroke="#2a78d6" stroke-width="1.5"/>
+      <text x="123" y="207" font-size="10.5" text-anchor="middle" fill="#17457e">tech-mods &#183; 1 MB</text>
+      <rect x="64" y="222" width="118" height="112" rx="3" fill="url(#dup)" stroke="#51606f" stroke-width="1.5"/>
+      <text x="123" y="268" font-size="12" font-weight="600" text-anchor="middle" fill="#33404d">shared mods</text>
+      <text x="123" y="286" font-size="11" text-anchor="middle" fill="#4b5866" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">5 MB</text>
+      <text x="123" y="314" font-size="9.5" font-style="italic" text-anchor="middle" fill="#5c6b7a">copy 1 of 3</text>
+      <text x="123" y="358" font-size="12" font-weight="700" text-anchor="middle" fill="#1a1a19">&#8776; 6 MB</text>
+
+      <!-- magic.zip -->
+      <text x="258" y="180" font-size="11.5" font-weight="600" text-anchor="middle" fill="#52514e">magic.zip</text>
+      <rect x="199" y="188" width="118" height="30" rx="3" fill="#e6e2f8" stroke="#4a3aa7" stroke-width="1.5"/>
+      <text x="258" y="207" font-size="10.5" text-anchor="middle" fill="#3b2f86">magic-mods &#183; 1 MB</text>
+      <rect x="199" y="222" width="118" height="112" rx="3" fill="url(#dup)" stroke="#51606f" stroke-width="1.5"/>
+      <text x="258" y="268" font-size="12" font-weight="600" text-anchor="middle" fill="#33404d">shared mods</text>
+      <text x="258" y="286" font-size="11" text-anchor="middle" fill="#4b5866" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">5 MB</text>
+      <text x="258" y="314" font-size="9.5" font-style="italic" text-anchor="middle" fill="#5c6b7a">copy 2 of 3</text>
+      <text x="258" y="358" font-size="12" font-weight="700" text-anchor="middle" fill="#1a1a19">&#8776; 6 MB</text>
+
+      <!-- adventure.zip -->
+      <text x="393" y="180" font-size="11.5" font-weight="600" text-anchor="middle" fill="#52514e">adventure.zip</text>
+      <rect x="334" y="188" width="118" height="30" rx="3" fill="#dcefdc" stroke="#008300" stroke-width="1.5"/>
+      <text x="393" y="207" font-size="10.5" text-anchor="middle" fill="#0a5c0a">adv-mods &#183; 1 MB</text>
+      <rect x="334" y="222" width="118" height="112" rx="3" fill="url(#dup)" stroke="#51606f" stroke-width="1.5"/>
+      <text x="393" y="268" font-size="12" font-weight="600" text-anchor="middle" fill="#33404d">shared mods</text>
+      <text x="393" y="286" font-size="11" text-anchor="middle" fill="#4b5866" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">5 MB</text>
+      <text x="393" y="314" font-size="9.5" font-style="italic" text-anchor="middle" fill="#5c6b7a">copy 3 of 3</text>
+      <text x="393" y="358" font-size="12" font-weight="700" text-anchor="middle" fill="#1a1a19">&#8776; 6 MB</text>
+
+      <line x1="64" y1="378" x2="452" y2="378" stroke="#e3e2db"/>
+      <text x="258" y="404" font-size="13.5" font-weight="700" text-anchor="middle" fill="#1a1a19">Total &#8776; 18 MB</text>
+      <text x="258" y="424" font-size="11" text-anchor="middle" fill="#898781">the same 5 MB of shared mods is stored and downloaded 3 times</text>
+    </g>
+
+    <!-- RIGHT: OCI layers -->
+    <g>
+      <rect x="488" y="104" width="428" height="356" rx="10" fill="#ffffff" stroke="#e3e2db"/>
+      <text x="508" y="132" font-size="13" font-weight="700" letter-spacing="0.8" fill="#1a1a19">OCI LAYERS</text>
+      <text x="508" y="149" font-size="11" fill="#898781">shared content stored once, small overlay per pack</text>
+
+      <text x="702" y="180" font-size="10.5" font-style="italic" text-anchor="middle" fill="#898781">unique overlays &#8212; 1 MB each</text>
+      <rect x="508" y="192" width="118" height="30" rx="3" fill="#dcebfb" stroke="#2a78d6" stroke-width="1.5"/>
+      <text x="567" y="211" font-size="10.5" text-anchor="middle" fill="#17457e">tech-mods &#183; 1 MB</text>
+      <rect x="643" y="192" width="118" height="30" rx="3" fill="#e6e2f8" stroke="#4a3aa7" stroke-width="1.5"/>
+      <text x="702" y="211" font-size="10.5" text-anchor="middle" fill="#3b2f86">magic-mods &#183; 1 MB</text>
+      <rect x="778" y="192" width="118" height="30" rx="3" fill="#dcefdc" stroke="#008300" stroke-width="1.5"/>
+      <text x="837" y="211" font-size="10.5" text-anchor="middle" fill="#0a5c0a">adv-mods &#183; 1 MB</text>
+
+      <g fill="none" stroke="#51606f" stroke-width="1.8">
+        <path d="M567,226 C567,250 654,250 664,268" marker-end="url(#pS)"/>
+        <path d="M702,226 L702,266" marker-end="url(#pS)"/>
+        <path d="M837,226 C837,250 750,250 740,268" marker-end="url(#pS)"/>
+      </g>
+
+      <rect x="602" y="276" width="200" height="90" rx="3" fill="#dfe5ea" stroke="#51606f" stroke-width="2"/>
+      <rect x="610" y="284" width="7" height="7" fill="#51606f" opacity="0.55"/>
+      <rect x="617" y="291" width="7" height="7" fill="#51606f" opacity="0.3"/>
+      <text x="702" y="310" font-size="12.5" font-weight="700" text-anchor="middle" fill="#33404d">shared base layer</text>
+      <text x="702" y="330" font-size="11" text-anchor="middle" fill="#4b5866" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">5 MB</text>
+      <rect x="656" y="340" width="92" height="18" rx="9" fill="#51606f"/>
+      <text x="702" y="352.5" font-size="10" font-weight="600" text-anchor="middle" fill="#ffffff">stored once</text>
+
+      <line x1="508" y1="378" x2="896" y2="378" stroke="#e3e2db"/>
+      <text x="702" y="404" font-size="13.5" font-weight="700" text-anchor="middle" fill="#1a1a19">Total &#8776; 8 MB</text>
+      <text x="702" y="424" font-size="11" text-anchor="middle" fill="#898781">5 MB shared (once) + 3 &#215; 1 MB overlays</text>
+    </g>
+
+    <!-- takeaway strip -->
+    <rect x="44" y="478" width="872" height="54" rx="8" fill="#e9edf1" stroke="#d3dae0"/>
+    <text x="480" y="500" font-size="13.5" font-weight="700" text-anchor="middle" fill="#1a1a19">Adding a 4th pack: ~6 MB as a zip vs ~1 MB as a layer</text>
+    <text x="480" y="519" font-size="11" text-anchor="middle" fill="#52514e">example figures &#8212; the shared base is already in the registry, so a new pack ships only its unique overlay</text>
+  </g>
+</svg>

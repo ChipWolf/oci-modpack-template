@@ -21,6 +21,48 @@ What you get over a plain `.zip`:
   exact `@sha256:...` fingerprint.
 - **Private packs** work too, using a normal `docker login`.
 
+![Two packs, tech and magic, each built from a shared base layer plus their own overlay; the registry stores the base layer only once.](docs/simple-tech-magic.svg)
+
+---
+
+## What's an OCI artifact? (60 seconds)
+
+You don't need to understand this to use the template - but here's the idea
+in plain terms:
+
+- A **container image** (the thing Docker uses) is really just a small
+  description file plus a few compressed folders called **layers**, each
+  identified by a unique fingerprint.
+- A **registry** is the server that stores them - Docker Hub, or GitHub's
+  own **GHCR**, which this template uses. A registry stores each layer only
+  once, even when many things point at it.
+- The format that registries and tools all agree on is the
+  **[Open Container Initiative (OCI)](https://opencontainers.org/)**
+  standard. Every modern registry speaks it.
+- An **OCI artifact** is that same "description + layers" packaging used for
+  something *other than* a runnable program. Helm charts, security
+  signatures, and - here - **modpacks** all ride the same rails. A small
+  label on the artifact says "this is a modpack, not an app," so tools don't
+  try to run it.
+
+So "publish your modpack as an OCI artifact" just means: tar your pack into
+a layer or two, write the little description file, and push it to a registry
+your players' servers can already reach. Nothing new is invented - it's the
+same plumbing behind every `docker pull`.
+
+**Want the authoritative source?** The standard itself lives at
+[opencontainers.org](https://opencontainers.org/); GitHub's registry that
+this template publishes to is documented
+[here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
+
+### Why not just ship a `.zip`?
+
+A plain `.zip` bundles every pack as one standalone blob, so shared content
+is duplicated in each. With OCI layers, the shared part is stored once and a
+new pack that reuses it costs only its own small layer:
+
+![Plain .zip ships three full copies including duplicated shared mods (~18 MB); OCI layers store the shared base once plus small per-pack overlays (~8 MB).](docs/zip-vs-oci.svg)
+
 ---
 
 ## Before you start
@@ -164,6 +206,16 @@ GENERIC_PACKS: "oci://ghcr.io/you/my-modpacks/base-extras:latest,oci://ghcr.io/y
 You can freely mix `oci://` refs with the plain URLs and file paths
 `GENERIC_PACKS` already accepts. Pin a version with a tag
 (`.../tech:v1.0.0`) or an exact digest (`.../tech@sha256:...`).
+
+---
+
+## The payoff, once you have many packs
+
+The more packs you ship that share components, the more the shared layers
+are reused - stored once in the registry and downloaded once per server,
+no matter how many packs reference them:
+
+![Four packs (Tech, Adventure, Magic, Skyblock) built from shared Core and Performance layers plus small unique overlays; 10 layer references resolve to only 6 stored blobs.](docs/layer-reuse-scales.svg)
 
 ---
 
